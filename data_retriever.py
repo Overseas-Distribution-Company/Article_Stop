@@ -49,4 +49,5 @@ def load_article_transactions(article_no) -> Article:
     return article
 
 
-print(load_article_transactions('S00225'))
+article = load_article_transactions('S00225')
+article.calculate_weights()
