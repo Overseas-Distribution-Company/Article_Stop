@@ -36,7 +36,7 @@ def generate_pie_plot(data):
     wedges, texts, autotexts = ax.pie(data['Quantity'], autopct=lambda pct: func(pct, data['Quantity']),
                                       textprops=dict(color="w"))
 
-    print(data)
+
     ax.legend(wedges, data['Customer'],
               title="Customer",
               loc="lower left",

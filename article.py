@@ -1,5 +1,5 @@
 from customer import Customer
-
+import matplotlib.pyplot as plt
 
 class Article:
     def __init__(self, no: str, description: str):
@@ -23,3 +23,8 @@ class Article:
         total = sum([customer.total_ordered_quantity() for customer in self.customer_dict.values()])
         for customer in self.customer_dict.values():
             customer.weight = customer.total_ordered_quantity() / total
+
+    def create_weight_plot(self):
+        fig, ax = plt.subplots()
+        ax.pie([customer.weight for customer in self.customer_dict.values()])
+        plt.show()
