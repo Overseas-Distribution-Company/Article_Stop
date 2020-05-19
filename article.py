@@ -1,6 +1,7 @@
 from customer import Customer
 import matplotlib.pyplot as plt
 
+
 class Article:
     def __init__(self, no: str, description: str):
         self.no: str = no
@@ -26,5 +27,17 @@ class Article:
 
     def create_weight_plot(self):
         fig, ax = plt.subplots()
-        ax.pie([customer.weight for customer in self.customer_dict.values()])
+        wedges, texts, autotexts = ax.pie(
+            [customer.weight for customer in self.customer_dict.values()],
+            autopct='%1.1f%%',
+            shadow=True,
+            explode=[0 for customer in self.customer_dict.values() ]
+        )
+        ax.legend(
+            wedges,
+            [customer.description for customer in self.customer_dict.values() if customer.weight > 0.05] + ['Misc.'],
+            title='Customers'
+        )
+        ax.axis('equal')
+        ax.set_title(f'{self.no} - {self.description}')
         plt.show()

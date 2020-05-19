@@ -48,7 +48,7 @@ def generate_pie_plot(data):
 
 
 if __name__ == '__main__':
-    frame = load_item_transactions('S00225')
+    frame = load_item_transactions('S01448')
     frame = frame.groupby(['Customer'], squeeze=True, as_index=False).sum()
     sum = frame.sum()[1]
     print(sum)
