@@ -35,7 +35,7 @@ class Article:
         )
         ax.legend(
             wedges,
-            [customer.description for customer in self.customer_dict.values() if customer.weight > 0.05] + ['Misc.'],
+            [f'{customer.code} - {customer.description}' for customer in self.customer_dict.values() if customer.weight > 0.05] + ['Misc.'],
             title='Customers'
         )
         ax.axis('equal')
