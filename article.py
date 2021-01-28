@@ -1,6 +1,9 @@
 from customer import Customer
 import matplotlib.pyplot as plt
 
+# S00225
+# S00226
+# S00716
 
 class Article:
     def __init__(self, no: str, description: str):
@@ -26,18 +29,29 @@ class Article:
             customer.weight = customer.total_ordered_quantity() / total
 
     def create_weight_plot(self):
+        self.calculate_weights()
         fig, ax = plt.subplots()
+        wedge_it = [(f'{customer.code} - {customer.description}', customer.weight) for customer in self.customer_dict.values()]
         wedges, texts, autotexts = ax.pie(
-            [customer.weight for customer in self.customer_dict.values()],
+            [wedge[1] for wedge in wedge_it],
             autopct='%1.1f%%',
             shadow=True,
             explode=[0 for customer in self.customer_dict.values() ]
         )
         ax.legend(
             wedges,
-            [f'{customer.code} - {customer.description}' for customer in self.customer_dict.values() if customer.weight > 0.05] + ['Misc.'],
+            [customer[0] for customer in wedge_it],
             title='Customers'
         )
         ax.axis('equal')
         ax.set_title(f'{self.no} - {self.description}')
         plt.show()
+
+    def do_flag_article(self, weight):
+        self.calculate_weights()
+        accumulated_weight = 0
+        for customer in self.customer_dict.values():
+            if customer.do_flag():
+                accumulated_weight += customer.weight
+
+        return accumulated_weight > weight

@@ -49,10 +49,23 @@ class Customer:
         return ret_lst
 
     def calculate_lingress(self):
-        self.slope, self.intersect, lo_slope, up_slope = stats.theilslopes(self.calculate_intervals(),
-                                                                           [i for i in
-                                                                            range(len(self.transactions) - 1)],
-                                                                           .99)
+
+        intervals = self.calculate_intervals()
+
+        if len(intervals) > 1 :
+            self.slope, self.intersect, lo_slope, up_slope = stats.theilslopes(self.calculate_intervals(),
+                                                                               [i for i in
+                                                                                range(len(self.transactions) - 1)],
+                                                                               .99)
+        elif len(intervals) == 1:
+            self.slope = 1
+            self.intersect = intervals[0]
+            up_slope = 1
+            self.confident_intersect = 2 * intervals[0]
+
+        else:
+            up_slope = 1
+            self.confident_intersect = np.inf
 
         self.confident_slope = up_slope
         self.confident_intersect = self.intersect
@@ -73,9 +86,11 @@ class Customer:
         return self.transactions[-1].transaction_date + self.get_next_predicted_interval()
 
     def do_flag(self) -> bool:
+        self.calculate_lingress()
         return self.get_next_prediction_max() < self.get_current_interval()
 
     def plot_graph(self):
+        self.calculate_lingress()
         fig, ax = plt.subplots()
         ax.plot(self.calculate_intervals(), '-o', label='Interval plot')
         self.calculate_lingress()
